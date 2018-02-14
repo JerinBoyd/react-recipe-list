@@ -14,14 +14,35 @@ import FormControl from 'react-bootstrap/lib/FormControl'
 
 class App extends Component {
 
- state ={
+    state= {
       recipes: [
-          {recipeNmae: 'jeff', ingrediantes: ['pepper', 'salt', 'bacon']}
+        {recipeName: 'jeff1', ingredients: ['pepper1', 'bacon', 'salt']},
+        {recipeName: 'jeff2', ingredients: ['pepper2', 'bacon', 'salt']},
+        {recipeName: 'jeff3', ingredients: ['pepper3', 'bacon', 'salt']},
       ]
- }
+    }
   render() {
+     const {recipes} = this.state;
     return (
-      <div className="App">
+      <div className="App Container btn-primary accordion">
+      <Accordion>
+        {recipes.map((recipe, index)=>(
+        <Panel header={recipe.recipeName} eventKey = {index} key={index}>
+          <ol>
+            {recipe.ingredients.map((item)=>(
+              <li key={item}>{item}</li>
+
+            ))}
+          </ol>
+          <ButtonToolbar>
+            <Button bsStyle="danger">Delete Recipe</Button>
+            <Button bsStyle="default">Edit Recipe</Button>
+          </ButtonToolbar>
+        </Panel>
+        ))}
+
+      </Accordion>
+      <Button BsStyle='primary'>Add Recipe</Button>
         
       </div>
     );
