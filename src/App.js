@@ -15,8 +15,20 @@ class App extends Component {
       { recipeName: "jeff1", ingredients: ["pepper1", "bacon", "salt"] },
       { recipeName: "jeff2", ingredients: ["pepper2", "bacon", "salt"] },
       { recipeName: "jeff3", ingredients: ["pepper3", "bacon", "salt"] }
-    ]
+    ],
+    showAdd: false
   };
+  //deletes a recipe
+  deleteRecipe(index){
+      let recipes = this.state.recipes.slice();
+      recipes.splice(index, 1);
+      this.setState({recipes});
+  }
+  close = () => {
+    if(this.state.showAdd){
+    this.setState({showAdd: false})
+    }
+  }
   render() {
     const {recipes} = this.state;
     return (
@@ -34,13 +46,18 @@ class App extends Component {
                 ))}
                 </ul>
                 <ButtonToolbar>
-                  <Button bsStyle="danger">Delete Recipe</Button>
+                  <Button bsStyle="danger" onClick={(event)=>this.deleteRecipe(index)}>Delete Recipe</Button>
                   <Button bsStyle="default">Edit Recipe</Button>
                 </ButtonToolbar>
               </Panel.Body>
             </Panel>
           ))}
         </PanelGroup>
+        <Modal show={this.state.showAdd} onHide={this.close}>
+
+
+        </Modal>
+        <Button bsStyle="primary">Add Recipe</Button>
       </div>
     );
   }
