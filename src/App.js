@@ -16,7 +16,8 @@ class App extends Component {
       { recipeName: "jeff2", ingredients: ["pepper2", "bacon", "salt"] },
       { recipeName: "jeff3", ingredients: ["pepper3", "bacon", "salt"] }
     ],
-    showAdd: false
+    showAdd: false,
+    newestRecipe:{recipeName:'', ingredients:[]}
   };
   //deletes a recipe
   deleteRecipe(index){
@@ -24,13 +25,23 @@ class App extends Component {
       recipes.splice(index, 1);
       this.setState({recipes});
   }
+  //Update newRecipe.recipeName
+  updateNewRecipe(recipeName, ingredients){
+    this.setState({newestRecipe:{recipeName: recipeName, ingredients: ingredients}});
+  }
+  // Closes a modal
   close = () => {
     if(this.state.showAdd){
     this.setState({showAdd: false})
     }
   }
+  // opens a modal
+  open = (state) => {
+  this.setState({[state]: true});
+  }
   render() {
-    const {recipes} = this.state;
+    const {recipes, newestRecipe} = this.state;
+    console.log(newestRecipe);
     return (
       <div className="App container">
         <PanelGroup accordion>
@@ -54,10 +65,31 @@ class App extends Component {
           ))}
         </PanelGroup>
         <Modal show={this.state.showAdd} onHide={this.close}>
-
+          <Modal.Header closeButton>
+            <Modal.Title> Add Recipe </Modal.Title>
+            <Modal.Body>
+              <FormGroup controlId='formBasicText'>
+                <ControlLabel>Recipe Name</ControlLabel>
+                <FormControl
+                  type='text' value={newestRecipe.recipeName}
+                  placeholder='Enter Recipe Name'
+                  onChange = {(event) => this.updateNewRecipe(event.target.value, newestRecipe.ingredients)}
+                ></FormControl>
+                    <FormGroup controlId='formBasicText'>
+                <ControlLabel>Recipe Name</ControlLabel>
+                <FormControl
+                  type='text area' value={newestRecipe.recipeName}
+                  placeholder='Enter Ingredients (Seperate By Commas)'
+                  onChange = {(event) => this.updateNewRecipe(newestRecipe.recipeName, event.target.value.split(","))}
+                  value={newestRecipe.ingredients}
+                ></FormControl>
+              </FormGroup>
+              </FormGroup>
+            </Modal.Body>
+          </Modal.Header>
 
         </Modal>
-        <Button bsStyle="primary">Add Recipe</Button>
+        <Button bsStyle="primary" onClick={(event)=>this.open('showAdd')}>Add Recipe</Button>
       </div>
     );
   }
